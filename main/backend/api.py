@@ -137,7 +137,7 @@ exe_path = os.path.join(os.path.dirname(__file__), 'bin', 'api.exe')
 # Run the .exe file
 subprocess.run([exe_path], check=True)
 
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory # type: ignore
 
 app = Flask(__name__)
 
